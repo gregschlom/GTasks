@@ -17,9 +17,9 @@ class QDateTime;
 
 namespace GTasks {
 
-class TaskListPrivate;
+class TasklistPrivate;
 
-class TaskList
+class Tasklist
 {
 public:
 	enum Status {
@@ -27,11 +27,11 @@ public:
 		Completed
 	};
 
-	TaskList();
-	TaskList(QVariantMap data);
-	TaskList(const TaskList& other);
-	TaskList &operator=(const TaskList&);
-	~TaskList();
+	Tasklist();
+	Tasklist(QVariantMap data);
+	Tasklist(const Tasklist& other);
+	Tasklist &operator=(const Tasklist&);
+	~Tasklist();
 
 	QVariantMap serialize() const;
 	void deserialize(QVariantMap data);
@@ -45,8 +45,8 @@ public:
 	void setTitle(const QString& title);
 
 private:
-    friend class TaskListPrivate;
-	QSharedDataPointer<TaskListPrivate> d;
+    friend class TasklistPrivate;
+	QSharedDataPointer<TasklistPrivate> d;
 };
 
 }

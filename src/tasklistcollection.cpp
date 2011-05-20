@@ -12,27 +12,27 @@
 
 namespace GTasks {
 
-TaskListCollection::TaskListCollection()
-	: d(new TaskListCollectionPrivate)
+TasklistCollection::TasklistCollection()
+	: d(new TasklistCollectionPrivate)
 {
 }
 
-TaskListCollection::TaskListCollection(QVariantMap data)
-	: d(new TaskListCollectionPrivate)
+TasklistCollection::TasklistCollection(QVariantMap data)
+	: d(new TasklistCollectionPrivate)
 {
 	deserialize(data);
 }
 
-TaskListCollection::~TaskListCollection()
+TasklistCollection::~TasklistCollection()
 {
 }
 
-TaskListCollection::TaskListCollection(const TaskListCollection& other)
+TasklistCollection::TasklistCollection(const TasklistCollection& other)
 	: d(other.d)
 {
 }
 
-TaskListCollection& TaskListCollection::operator=(const TaskListCollection& other)
+TasklistCollection& TasklistCollection::operator=(const TasklistCollection& other)
 {
 	if (this != &other) {
 		d = other.d;
@@ -40,7 +40,7 @@ TaskListCollection& TaskListCollection::operator=(const TaskListCollection& othe
 	return *this;
 }
 
-TaskListCollectionPrivate::TaskListCollectionPrivate()
+TasklistCollectionPrivate::TasklistCollectionPrivate()
 	: QSharedData(),
 	  kind("tasks#taskLists"),
 	  etag(""),
@@ -49,7 +49,7 @@ TaskListCollectionPrivate::TaskListCollectionPrivate()
 {
 }
 
-TaskListCollectionPrivate::TaskListCollectionPrivate(const TaskListCollectionPrivate& other)
+TasklistCollectionPrivate::TasklistCollectionPrivate(const TasklistCollectionPrivate& other)
 	: QSharedData(other),
 	  kind(other.kind),
 	  etag(other.etag),
@@ -58,7 +58,7 @@ TaskListCollectionPrivate::TaskListCollectionPrivate(const TaskListCollectionPri
 {
 }
 
-QVariantMap TaskListCollection::serialize() const
+QVariantMap TasklistCollection::serialize() const
 {
 	QVariantMap result;
 	result.insert("kind", d->kind);
@@ -67,7 +67,7 @@ QVariantMap TaskListCollection::serialize() const
 
 	// Serialize items
 	QVariantList itemsData;
-	foreach(const TaskList& t, d->items) {
+	foreach(const Tasklist& t, d->items) {
 		itemsData << t.serialize();
 	}
 	result.insert("items", itemsData);
@@ -75,7 +75,7 @@ QVariantMap TaskListCollection::serialize() const
 	return result;
 }
 
-void TaskListCollection::deserialize(QVariantMap data)
+void TasklistCollection::deserialize(QVariantMap data)
 {
 	Q_ASSERT(data.value("kind") == "tasks#taskLists");
 
@@ -85,14 +85,14 @@ void TaskListCollection::deserialize(QVariantMap data)
 
 	// Deserialize items
 	foreach(const QVariant& tasklistData, data.value("items").toList()) {
-		d->items << TaskList(tasklistData.toMap());
+		d->items << Tasklist(tasklistData.toMap());
 	}
 }
 
 // Getters
-QString      TaskListCollection::kind()      const { return d->kind; }
-QString      TaskListCollection::etag()      const { return d->etag; }
-QString      TaskListCollection::nextPageToken()     const { return d->nextPageToken; }
-QList<GTasks::TaskList> TaskListCollection::items()   const { return d->items; }
+QString      TasklistCollection::kind()      const { return d->kind; }
+QString      TasklistCollection::etag()      const { return d->etag; }
+QString      TasklistCollection::nextPageToken()     const { return d->nextPageToken; }
+QList<GTasks::Tasklist> TasklistCollection::items()   const { return d->items; }
 
 } // namespace GTasks

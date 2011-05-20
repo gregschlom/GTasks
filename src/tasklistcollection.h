@@ -13,17 +13,17 @@
 
 namespace GTasks {
 
-class TaskList;
-class TaskListCollectionPrivate;
+class Tasklist;
+class TasklistCollectionPrivate;
 
-class TaskListCollection
+class TasklistCollection
 {
 public:
-	TaskListCollection();
-	TaskListCollection(QVariantMap data);
-	TaskListCollection(const TaskListCollection& other);
-	TaskListCollection &operator=(const TaskListCollection&);
-	~TaskListCollection();
+	TasklistCollection();
+	TasklistCollection(QVariantMap data);
+	TasklistCollection(const TasklistCollection& other);
+	TasklistCollection &operator=(const TasklistCollection&);
+	~TasklistCollection();
 
 	QVariantMap serialize() const;
 	void deserialize(QVariantMap data);
@@ -31,11 +31,11 @@ public:
 	QString kind() const;
 	QString etag() const;
 	QString nextPageToken() const;
-	QList<GTasks::TaskList> items() const;
+	QList<GTasks::Tasklist> items() const;
 
 private:
-    friend class TaskListCollectionPrivate;
-	QSharedDataPointer<TaskListCollectionPrivate> d;
+    friend class TasklistCollectionPrivate;
+	QSharedDataPointer<TasklistCollectionPrivate> d;
 };
 
 }

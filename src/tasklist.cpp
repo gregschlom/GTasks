@@ -12,30 +12,30 @@
 
 namespace GTasks {
 
-TaskList::TaskList()
-	: d(new TaskListPrivate)
+Tasklist::Tasklist()
+	: d(new TasklistPrivate)
 {
 }
 
 /*!
-  Convenience constructor to create a TaskList and initialize it with serialized data
+  Convenience constructor to create a Tasklist and initialize it with serialized data
 */
-TaskList::TaskList(QVariantMap data)
-	: d(new TaskListPrivate)
+Tasklist::Tasklist(QVariantMap data)
+	: d(new TasklistPrivate)
 {
 	deserialize(data);
 }
 
-TaskList::~TaskList()
+Tasklist::~Tasklist()
 {
 }
 
-TaskList::TaskList(const TaskList& other)
+Tasklist::Tasklist(const Tasklist& other)
 	: d(other.d)
 {
 }
 
-TaskList& TaskList::operator=(const TaskList& other)
+Tasklist& Tasklist::operator=(const Tasklist& other)
 {
 	if (this != &other) {
 		d = other.d;
@@ -43,7 +43,7 @@ TaskList& TaskList::operator=(const TaskList& other)
 	return *this;
 }
 
-TaskListPrivate::TaskListPrivate()
+TasklistPrivate::TasklistPrivate()
 	: QSharedData(),
 	  kind("tasks#taskList"),
 	  id(""),
@@ -53,7 +53,7 @@ TaskListPrivate::TaskListPrivate()
 {
 }
 
-TaskListPrivate::TaskListPrivate(const TaskListPrivate& other)
+TasklistPrivate::TasklistPrivate(const TasklistPrivate& other)
 	: QSharedData(other),
 	  kind(other.kind),
 	  id(other.id),
@@ -63,7 +63,7 @@ TaskListPrivate::TaskListPrivate(const TaskListPrivate& other)
 {
 }
 
-QVariantMap TaskList::serialize() const
+QVariantMap Tasklist::serialize() const
 {
 	QVariantMap result;
 	result.insert("kind", d->kind);
@@ -74,7 +74,7 @@ QVariantMap TaskList::serialize() const
 	return result;
 }
 
-void TaskList::deserialize(QVariantMap data)
+void Tasklist::deserialize(QVariantMap data)
 {
 	Q_ASSERT(data.value("kind") == "tasks#taskList");
 
@@ -86,13 +86,13 @@ void TaskList::deserialize(QVariantMap data)
 }
 
 // Getters
-QString      TaskList::kind()      const { return d->kind; }
-QString      TaskList::id()        const { return d->id; }
-QString      TaskList::etag()      const { return d->etag; }
-QString      TaskList::title()     const { return d->title; }
-QUrl         TaskList::selfLink()  const { return d->selfLink; }
+QString      Tasklist::kind()      const { return d->kind; }
+QString      Tasklist::id()        const { return d->id; }
+QString      Tasklist::etag()      const { return d->etag; }
+QString      Tasklist::title()     const { return d->title; }
+QUrl         Tasklist::selfLink()  const { return d->selfLink; }
 
 // Setters
-void TaskList::setTitle(const QString& title) { d->title = title; }
+void Tasklist::setTitle(const QString& title) { d->title = title; }
 
 } // namespace GTasks

@@ -14,16 +14,16 @@
 
 namespace GTasks {
 
-class TaskListCollectionPrivate : public QSharedData
+class TasklistCollectionPrivate : public QSharedData
 {
 public:
-	TaskListCollectionPrivate();
-	TaskListCollectionPrivate(const TaskListCollectionPrivate& other);
+	TasklistCollectionPrivate();
+	TasklistCollectionPrivate(const TasklistCollectionPrivate& other);
 
 	QString kind;
 	QString etag;
 	QString nextPageToken;
-	QList<GTasks::TaskList> items;
+	QList<GTasks::Tasklist> items;
 };
 
 }
