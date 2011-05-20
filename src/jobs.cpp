@@ -53,19 +53,13 @@ void Job::parseReply()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-ListTasks::ListTasks(Service* service)
+ListTasksJob::ListTasksJob(Service* service, const QString& tasklistId)
 	: Job(service, "GET", "/lists/{tasklist}/tasks", SIGNAL(result(QList<GTasks::Task>))),
-      m_tasklist("@default")
+      m_tasklist(tasklistId)
 {
 }
 
-ListTasks* ListTasks::tasklist(QString tasklist)
-{
-	m_tasklist = tasklist;
-	return this;
-}
-
-void ListTasks::doStart()
+void ListTasksJob::doStart()
 {
 	QNetworkRequest request;
 	QString path = m_path.replace("{tasklist}", m_tasklist);
@@ -75,24 +69,19 @@ void ListTasks::doStart()
 	startRequest(request);
 }
 
-void ListTasks::parseReply(QNetworkReply* reply)
+void ListTasksJob::parseReply(QNetworkReply* reply)
 {
-	qDebug() << "Error status:" << reply->error() << reply->errorString();
-
-	//return;
-
-	QJson::Parser parser;
 	bool ok;
+	QJson::Parser parser;
 	QVariantMap response = parser.parse(reply->readAll(), &ok).toMap();
 
-	TaskCollection tasks;
-	if (!response.contains("kind") || response["kind"] != "tasks#tasks") {
-		qDebug() << "Error, unexpected format " << response["kind"] << ". Was expecting tasks#tasks";
-	} else {
-		tasks.deserialize(response);
-	}
+	// Do error handling
+	//qDebug() << "Error status:" << reply->error() << reply->errorString();
+	//if (!response.contains("kind") || response["kind"] != "tasks#tasks") {
 
-	emit result(tasks.items());
+	TaskCollection tasks;
+	tasks.deserialize(response);
+	emit result(tasks);
 }
 
 } // namespace GTasks

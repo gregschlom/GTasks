@@ -16,13 +16,13 @@ class QNetworkAccessManager;
 
 namespace GTasks {
 
-class ListTasks;
+class ListTasksJob;
 
 class Service : public QObject
 {
     Q_OBJECT
 public:
-    explicit Service(QNetworkAccessManager* networkManager, QObject *parent = 0);
+    explicit Service(QNetworkAccessManager* networkManager, QObject* parent = 0);
 
 	void setApiKey(QString key);
 	void setToken(OAuth::Token);
@@ -32,7 +32,7 @@ public:
 	QString baseUrl() const;
 	OAuth::Token token() const;
 
-	ListTasks* listTasks();
+	ListTasksJob* listTasks(const QString& tasklistId);
 
 private:
 	QNetworkAccessManager* m_networkManager;

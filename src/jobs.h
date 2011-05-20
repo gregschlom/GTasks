@@ -48,15 +48,14 @@ private:
 	const char* m_result;
 };
 
-class ListTasks : public Job
+class ListTasksJob : public Job
 {
     Q_OBJECT
 public:
-    explicit ListTasks(Service* service);
-	ListTasks* tasklist(QString tasklist);
+    explicit ListTasksJob(Service* service, const QString& tasklistId);
 
 signals:
-	void result(QList<GTasks::Task>);
+	void result(GTasks::TaskCollection);
 
 protected slots:
 	void parseReply(QNetworkReply* reply);
