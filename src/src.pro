@@ -21,9 +21,18 @@ HEADERS += \
     jobs.h \
     service.h \
     task_p.h \
-    task.h
+    task.h \
+    taskcollection.h \
+    taskcollection_p.h \
+    tasklistcollection_p.h \
+    tasklistcollection.h \
+    tasklist_p.h \
+    tasklist.h
 
 SOURCES += \
     jobs.cpp \
     service.cpp \
-    task.cpp
+    task.cpp \
+    taskcollection.cpp \
+    tasklistcollection.cpp \
+    tasklist.cpp

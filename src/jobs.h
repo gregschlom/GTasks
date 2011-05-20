@@ -11,6 +11,7 @@
 #include <QObject>
 
 #include "task.h"
+#include "taskcollection.h"
 
 class QNetworkReply;
 class QNetworkRequest;
@@ -32,7 +33,7 @@ protected:
 	virtual void doStart() = 0;
 
 protected slots:
-	virtual void requestFinished(QNetworkReply*) = 0;
+	virtual void parseReply(QNetworkReply*) = 0;
 
 protected:
 	Service* m_service;
@@ -40,7 +41,7 @@ protected:
 	QString m_path;
 
 private slots:
-	void requestFinished();
+	void parseReply();
 
 private:
 	QNetworkReply* m_reply;
@@ -58,7 +59,7 @@ signals:
 	void result(QList<GTasks::Task>);
 
 protected slots:
-	void requestFinished(QNetworkReply* reply);
+	void parseReply(QNetworkReply* reply);
 
 private:
 	void doStart();

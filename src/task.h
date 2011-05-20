@@ -28,11 +28,12 @@ public:
 	};
 
 	Task();
+	Task(QVariantMap data);
 	Task(const Task& other);
 	Task &operator=(const Task&);
 	~Task();
 
-	QVariantMap serialize();
+	QVariantMap serialize() const;
 	void deserialize(QVariantMap data);
 
 	QString kind() const;

@@ -5,8 +5,8 @@
   contact@betterinbox.com
 */
 
-#ifndef TASK_P_H
-#define TASK_P_H
+#ifndef GTASKS_TASK_P_H
+#define GTASKS_TASK_P_H
 
 #include <QSharedData>
 #include <QUrl>
@@ -44,4 +44,4 @@ public:
 };
 
 }
-#endif // TASK_P_H
+#endif // GTASKS_TASK_P_H

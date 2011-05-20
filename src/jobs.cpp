@@ -37,14 +37,14 @@ void Job::startAndCallback(QObject* object, const char* member)
 void Job::startRequest(const QNetworkRequest& request)
 {
 	m_reply = m_service->networkManager()->get(request);
-    connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    connect(m_reply, SIGNAL(finished()), this, SLOT(parseReply()));
 	m_reply->ignoreSslErrors();
 	qDebug() << "Requesting... " << request.url();
 }
 
-void Job::requestFinished()
+void Job::parseReply()
 {
-	requestFinished(m_reply);
+	parseReply(m_reply);
 	m_reply->deleteLater();
 	this->deleteLater();
 }
@@ -75,10 +75,8 @@ void ListTasks::doStart()
 	startRequest(request);
 }
 
-void ListTasks::requestFinished(QNetworkReply* reply)
+void ListTasks::parseReply(QNetworkReply* reply)
 {
-	QList<Task> tasks;
-
 	qDebug() << "Error status:" << reply->error() << reply->errorString();
 
 	//return;
@@ -87,19 +85,14 @@ void ListTasks::requestFinished(QNetworkReply* reply)
 	bool ok;
 	QVariantMap response = parser.parse(reply->readAll(), &ok).toMap();
 
+	TaskCollection tasks;
 	if (!response.contains("kind") || response["kind"] != "tasks#tasks") {
 		qDebug() << "Error, unexpected format " << response["kind"] << ". Was expecting tasks#tasks";
 	} else {
-		foreach(const QVariant _task, response["items"].toList()) {
-			QVariantMap task = _task.toMap();
-			Q_ASSERT(task["kind"] == "tasks#task");
-			Task t;
-			t.deserialize(task);
-			tasks << t;
-		}
+		tasks.deserialize(response);
 	}
 
-	emit result(tasks);
+	emit result(tasks.items());
 }
 
 } // namespace GTasks

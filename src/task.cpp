@@ -9,13 +9,21 @@
 #include "task_p.h"
 
 #include <QString>
-#include <QStringList>
 
 namespace GTasks {
 
 Task::Task()
 	: d(new TaskPrivate)
 {
+}
+
+/*!
+  Convenience constructor to create a Task and initialize it with serialized data
+*/
+Task::Task(QVariantMap data)
+	: d(new TaskPrivate)
+{
+	deserialize(data);
 }
 
 Task::~Task()
@@ -73,7 +81,7 @@ TaskPrivate::TaskPrivate(const TaskPrivate& other)
 {
 }
 
-QVariantMap Task::serialize()
+QVariantMap Task::serialize() const
 {
 	QVariantMap result;
 	result.insert("kind", d->kind);
