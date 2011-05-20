@@ -21,8 +21,7 @@ HEADERS += \
     jobs.h \
     service.h \
     task_p.h \
-    task.h \
-    model.h
+    task.h
 
 SOURCES += \
     jobs.cpp \

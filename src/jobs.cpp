@@ -94,8 +94,7 @@ void ListTasks::requestFinished(QNetworkReply* reply)
 			QVariantMap task = _task.toMap();
 			Q_ASSERT(task["kind"] == "tasks#task");
 			Task t;
-			//t.setId(task["id"]);
-			t.setTitle(task["title"].toString());
+			t.deserialize(task);
 			tasks << t;
 		}
 	}

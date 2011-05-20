@@ -8,16 +8,16 @@
 #ifndef TASK_P_H
 #define TASK_P_H
 
-#include "model.h"
-#include "task.h"
-
+#include <QSharedData>
 #include <QUrl>
 #include <QString>
 #include <QDateTime>
 
+#include "task.h"
+
 namespace GTasks {
 
-class TaskPrivate : public Model
+class TaskPrivate : public QSharedData
 {
 public:
 	TaskPrivate();
@@ -37,6 +37,10 @@ public:
 	bool completed;
 	bool deleted;
 	bool hidden;
+
+	// helper methods for serialization / deserialization
+	void statusFromString(const QString& s);
+	QString statusAsString() const;
 };
 
 }

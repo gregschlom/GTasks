@@ -9,6 +9,7 @@
 #define GTASKS_TASK_H
 
 #include <QSharedData>
+#include <QVariant>
 
 class QString;
 class QUrl;
@@ -30,6 +31,9 @@ public:
 	Task(const Task& other);
 	Task &operator=(const Task&);
 	~Task();
+
+	QVariantMap serialize();
+	void deserialize(QVariantMap data);
 
 	QString kind() const;
 	QString id() const;
