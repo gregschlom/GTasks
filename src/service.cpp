@@ -18,9 +18,9 @@ Service::Service(QNetworkAccessManager* networkManager, QObject* parent) :
 {
 }
 
-ListTasksJob* Service::listTasks(const QString& tasklistId)
+ListTasksJob& Service::listTasks(const QString& tasklistId)
 {
-	return new ListTasksJob(this, tasklistId);
+	return *new ListTasksJob(this, tasklistId);
 }
 
 void Service::setApiKey(QString key) { m_apiKey = key; }

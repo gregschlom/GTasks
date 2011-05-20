@@ -32,7 +32,7 @@ public:
 	QString baseUrl() const;
 	OAuth::Token token() const;
 
-	ListTasksJob* listTasks(const QString& tasklistId);
+	ListTasksJob& listTasks(const QString& tasklistId);
 
 private:
 	QNetworkAccessManager* m_networkManager;

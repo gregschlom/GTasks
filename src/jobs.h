@@ -29,8 +29,10 @@ public:
 	void startAndCallback(QObject* object, const char* member);
 
 protected:
-	void startRequest(const QNetworkRequest& request);
-	virtual void doStart() = 0;
+	void execute(const QNetworkRequest& request);
+	//virtual void doStart() = 0;
+
+	void addRequestParam(const QString& param, const QVariant& value);
 
 protected slots:
 	virtual void parseReply(QNetworkReply*) = 0;
@@ -46,6 +48,7 @@ private slots:
 private:
 	QNetworkReply* m_reply;
 	const char* m_result;
+	QMap<QString, QString> m_parameters;
 };
 
 class ListTasksJob : public Job
@@ -54,17 +57,23 @@ class ListTasksJob : public Job
 public:
     explicit ListTasksJob(Service* service, const QString& tasklistId);
 
+	// Optional parameters
+	ListTasksJob& maxResults(int max);                     // default 20, max 100
+	ListTasksJob& completedBefore(const QDateTime& date);
+	ListTasksJob& completedAfter(const QDateTime& date);
+	ListTasksJob& dueBefore(const QDateTime& date);
+	ListTasksJob& dueAfter(const QDateTime& date);
+	ListTasksJob& updatedAfter(const QDateTime& date);
+	ListTasksJob& showCompleted(bool flag);                // default true
+	ListTasksJob& showDeleted(bool flag);                  // default false
+	ListTasksJob& showHidden(bool flag);                   // default true
+	ListTasksJob& pageToken(const QString& pageToken);
+
 signals:
 	void result(GTasks::TaskCollection);
 
 protected slots:
 	void parseReply(QNetworkReply* reply);
-
-private:
-	void doStart();
-
-private:
-	QString m_tasklist;
 };
 
 }
