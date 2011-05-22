@@ -18,6 +18,7 @@ DEFINES += SIMPLEOAUTH_STATIC_LIB
 HEADERS += \
     gtasks_export.h \
     cache.h \
+    job.h \
     jobs.h \
     service.h \
     task_p.h \
@@ -31,6 +32,7 @@ HEADERS += \
 
 SOURCES += \
     jobs.cpp \
+    job.cpp \
     service.cpp \
     task.cpp \
     taskcollection.cpp \

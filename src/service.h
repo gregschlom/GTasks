@@ -9,6 +9,7 @@
 #define GTASKS_SERVICE_H
 
 #include <QObject>
+#include <QUrl>
 
 #include "simpleoauth/oauth_token.h"
 
@@ -17,6 +18,8 @@ class QNetworkAccessManager;
 namespace GTasks {
 
 class ListTasksJob;
+class InsertTasklistJob;
+class Tasklist;
 
 class Service : public QObject
 {
@@ -24,21 +27,22 @@ class Service : public QObject
 public:
     explicit Service(QNetworkAccessManager* networkManager, QObject* parent = 0);
 
-	void setApiKey(QString key);
-	void setToken(OAuth::Token);
+	void setApiKey(const QString& key);
+	void setToken(const OAuth::Token& token);
 
 	QNetworkAccessManager* networkManager() const;
-	QString apiKey() const;
-	QString baseUrl() const;
-	OAuth::Token token() const;
+	QUrl baseUrl() const;
+	const QString apiKey() const;
+	const OAuth::Token token() const;
 
 	ListTasksJob& listTasks(const QString& tasklistId);
+	InsertTasklistJob& insertTasklist(const Tasklist& tasklist);
 
 private:
 	QNetworkAccessManager* m_networkManager;
 	QString m_apiKey;
 	OAuth::Token m_token;
-	const QString m_baseUrl;
+	const QUrl m_baseUrl;
 };
 
 }

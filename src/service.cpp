@@ -14,7 +14,6 @@ Service::Service(QNetworkAccessManager* networkManager, QObject* parent) :
     QObject(parent),
     m_networkManager(networkManager),
     m_baseUrl("https://www.googleapis.com/tasks/v1")
-	//m_baseUrl("https://betterinbox.com")
 {
 }
 
@@ -23,12 +22,19 @@ ListTasksJob& Service::listTasks(const QString& tasklistId)
 	return *new ListTasksJob(this, tasklistId);
 }
 
-void Service::setApiKey(QString key) { m_apiKey = key; }
-void Service::setToken(OAuth::Token token) { m_token = token; }
+InsertTasklistJob& Service::insertTasklist(const Tasklist& tasklist)
+{
+	return *new InsertTasklistJob(this, tasklist);
+}
 
-QString Service::apiKey() const { return m_apiKey; }
-QString Service::baseUrl() const { return m_baseUrl; }
-OAuth::Token Service::token() const { return m_token; }
+// Setters
+void Service::setApiKey(const QString& key)       { m_apiKey = key; }
+void Service::setToken(const OAuth::Token& token) { m_token = token; }
+
+// Getters
+QUrl                   Service::baseUrl()        const { return m_baseUrl; }
+const QString          Service::apiKey()         const { return m_apiKey; }
+const OAuth::Token     Service::token()          const { return m_token; }
 QNetworkAccessManager* Service::networkManager() const { return m_networkManager; }
 
 } // namespace GTasks

@@ -1,0 +1,4 @@
+tests/*
+*.pro.user
+src/qjson/*
+src/simpleoauth/*
