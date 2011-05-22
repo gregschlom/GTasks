@@ -60,11 +60,15 @@ void Job::addRequestParam(const QString& name, const QVariant& value)
 
 void Job::startAndCallback(QObject* object, const char* callbackSlot)
 {
-	// Assert that this job isn't already started
-	Q_ASSERT(m_reply == 0);
-
 	// Connect the subclass's result signal to the user-provided callback slot
 	connect(this, m_resultSignal, object, callbackSlot);
+	start();
+}
+
+void Job::start()
+{
+	// Assert that this job isn't already started
+	Q_ASSERT(m_reply == 0);
 
 	QUrl url = m_service->baseUrl();
 	url.setPath(url.path() + m_path);

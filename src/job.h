@@ -25,6 +25,7 @@ public:
 	enum HttpMethod { Get, Post, Put, Delete, Head };
 
 	explicit Job(Service* service, HttpMethod method, QString path, const char* result);
+	void start();
 	void startAndCallback(QObject* object, const char* callbackSlot);
 
 protected:
