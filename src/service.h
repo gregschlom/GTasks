@@ -17,9 +17,11 @@ class QNetworkAccessManager;
 
 namespace GTasks {
 
-class ListTasksJob;
-class InsertTasklistJob;
 class Tasklist;
+class ListTasksJob;
+class ListTasklistsJob;
+class InsertTasklistJob;
+class DeleteTasklistJob;
 
 class Service : public QObject
 {
@@ -36,7 +38,10 @@ public:
 	const OAuth::Token token() const;
 
 	ListTasksJob& listTasks(const QString& tasklistId);
+	ListTasklistsJob& listTasklists();
 	InsertTasklistJob& insertTasklist(const Tasklist& tasklist);
+	DeleteTasklistJob& deleteTasklist(const Tasklist& tasklist);
+	DeleteTasklistJob& deleteTasklist(const QString& tasklistId);
 
 private:
 	QNetworkAccessManager* m_networkManager;

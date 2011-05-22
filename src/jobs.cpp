@@ -7,6 +7,8 @@
 
 #include "jobs.h"
 
+//#include <QDebug>
+
 namespace GTasks {
 
 /*!
@@ -26,6 +28,7 @@ void ListTasksJob::parseReply(const QVariantMap& response)
 
 // Optional parameters setters
 ListTasksJob& ListTasksJob::maxResults(int max)                    { addRequestParam("maxResults",      max); return *this; }
+ListTasksJob& ListTasksJob::pageToken(const QString& pageToken)    { addRequestParam("pageToken",       pageToken); return *this; }
 ListTasksJob& ListTasksJob::completedBefore(const QDateTime& date) { addRequestParam("completedBefore", date); return *this; }
 ListTasksJob& ListTasksJob::completedAfter(const QDateTime& date)  { addRequestParam("completedAfter",  date); return *this; }
 ListTasksJob& ListTasksJob::dueBefore(const QDateTime& date)       { addRequestParam("dueBefore",       date); return *this; }
@@ -34,7 +37,25 @@ ListTasksJob& ListTasksJob::updatedAfter(const QDateTime& date)    { addRequestP
 ListTasksJob& ListTasksJob::showCompleted(bool flag)               { addRequestParam("showCompleted",   flag); return *this; }
 ListTasksJob& ListTasksJob::showDeleted(bool flag)                 { addRequestParam("showDeleted",     flag); return *this; }
 ListTasksJob& ListTasksJob::showHidden(bool flag)                  { addRequestParam("showHidden",      flag); return *this; }
-ListTasksJob& ListTasksJob::pageToken(const QString& pageToken)    { addRequestParam("pageToken",       pageToken); return *this; }
+
+
+/*!
+  ListTasklistsJob
+*/
+ListTasklistsJob::ListTasklistsJob(Service* service)
+	: Job(service,
+          Job::Get, "/users/@me/lists",
+          SIGNAL(result(GTasks::TasklistCollection)))
+{
+}
+
+void ListTasklistsJob::parseReply(const QVariantMap& response)
+{
+	emit result(TasklistCollection(response));
+}
+
+ListTasklistsJob& ListTasklistsJob::maxResults(int max)                    { addRequestParam("maxResults", max); return *this; }
+ListTasklistsJob& ListTasklistsJob::pageToken(const QString& pageToken)    { addRequestParam("pageToken",  pageToken); return *this; }
 
 
 /*!
@@ -53,6 +74,22 @@ InsertTasklistJob::InsertTasklistJob(Service* service, const Tasklist& tasklist)
 void InsertTasklistJob::parseReply(const QVariantMap& response)
 {
 	emit result(Tasklist(response));
+}
+
+/*!
+  DeleteTasklistJob
+*/
+DeleteTasklistJob::DeleteTasklistJob(Service* service, const QString& tasklistId)
+	: Job(service,
+          Job::Delete, "/users/@me/lists/" + tasklistId,
+          SIGNAL(result()))
+{
+}
+
+void DeleteTasklistJob::parseReply(const QVariantMap& response)
+{
+	Q_UNUSED(response);
+	emit result();
 }
 
 

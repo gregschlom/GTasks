@@ -11,6 +11,7 @@
 #include "job.h"
 #include "task.h"
 #include "tasklist.h"
+#include "tasklistcollection.h"
 #include "taskcollection.h"
 
 namespace GTasks {
@@ -23,6 +24,7 @@ public:
 
 	// Optional parameters
 	ListTasksJob& maxResults(int max);                     // default 20, max 100
+	ListTasksJob& pageToken(const QString& pageToken);
 	ListTasksJob& completedBefore(const QDateTime& date);
 	ListTasksJob& completedAfter(const QDateTime& date);
 	ListTasksJob& dueBefore(const QDateTime& date);
@@ -31,7 +33,6 @@ public:
 	ListTasksJob& showCompleted(bool flag);                // default true
 	ListTasksJob& showDeleted(bool flag);                  // default false
 	ListTasksJob& showHidden(bool flag);                   // default true
-	ListTasksJob& pageToken(const QString& pageToken);
 
 signals:
 	void result(GTasks::TaskCollection);
@@ -40,6 +41,21 @@ protected slots:
 	void parseReply(const QVariantMap& response);
 };
 
+class ListTasklistsJob : public Job
+{
+    Q_OBJECT
+public:
+    explicit ListTasklistsJob(Service* service);
+	ListTasklistsJob& maxResults(int max);
+	ListTasklistsJob& pageToken(const QString& pageToken);
+
+signals:
+	void result(GTasks::TasklistCollection);
+
+protected slots:
+	void parseReply(const QVariantMap& response);
+
+};
 
 class InsertTasklistJob : public Job
 {
@@ -49,6 +65,19 @@ public:
 
 signals:
 	void result(GTasks::Tasklist);
+
+protected slots:
+	void parseReply(const QVariantMap& response);
+};
+
+class DeleteTasklistJob : public Job
+{
+    Q_OBJECT
+public:
+	explicit DeleteTasklistJob(Service* service, const QString& tasklistId);
+
+signals:
+	void result();
 
 protected slots:
 	void parseReply(const QVariantMap& response);

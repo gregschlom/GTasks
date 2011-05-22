@@ -17,16 +17,11 @@ Service::Service(QNetworkAccessManager* networkManager, QObject* parent) :
 {
 }
 
-ListTasksJob& Service::listTasks(const QString& tasklistId)
-{
-	return *new ListTasksJob(this, tasklistId);
-}
-
-InsertTasklistJob& Service::insertTasklist(const Tasklist& tasklist)
-{
-	return *new InsertTasklistJob(this, tasklist);
-}
-
+ListTasksJob&      Service::listTasks(const QString& tasklistId)     { return *new ListTasksJob(this, tasklistId); }
+ListTasklistsJob&  Service::listTasklists()                          { return *new ListTasklistsJob(this); }
+InsertTasklistJob& Service::insertTasklist(const Tasklist& tasklist) { return *new InsertTasklistJob(this, tasklist); }
+DeleteTasklistJob& Service::deleteTasklist(const Tasklist& tasklist) { return *new DeleteTasklistJob(this, tasklist.id()); }
+DeleteTasklistJob& Service::deleteTasklist(const QString& tasklistId) { return *new DeleteTasklistJob(this, tasklistId); }
 // Setters
 void Service::setApiKey(const QString& key)       { m_apiKey = key; }
 void Service::setToken(const OAuth::Token& token) { m_token = token; }
