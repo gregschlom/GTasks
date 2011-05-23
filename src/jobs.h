@@ -36,7 +36,7 @@ class GetTasklistJob : public Job
 {
     Q_OBJECT
 public:
-	explicit GetTasklistJob(Service* service, const QString& tasklistId);
+	explicit GetTasklistJob(Service* service, const QUrl& selfLink);
 
 signals:
 	void result(GTasks::Tasklist);
@@ -75,7 +75,7 @@ class DeleteTasklistJob : public Job
 {
     Q_OBJECT
 public:
-	explicit DeleteTasklistJob(Service* service, const QString& tasklistId);
+	explicit DeleteTasklistJob(Service* service, const QUrl& selfLink);
 
 signals:
 	void result();

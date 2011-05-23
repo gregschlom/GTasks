@@ -17,13 +17,13 @@ Service::Service(QNetworkAccessManager* networkManager, QObject* parent) :
 }
 
 ListTasklistsJob& Service::listTasklists() { return *new ListTasklistsJob(this); }
-//GetTasklistJob& Service::getTasklist(const QUrl& selfLink);
-GetTasklistJob& Service::getTasklist(const QString& tasklistId) { return *new GetTasklistJob(this, tasklistId); }
+GetTasklistJob& Service::getTasklist(const QUrl& selfLink) { return *new GetTasklistJob(this, selfLink); }
+GetTasklistJob& Service::getTasklist(const QString& tasklistId) { return *new GetTasklistJob(this, Tasklist::generateSelfLink(tasklistId)); }
 InsertTasklistJob& Service::insertTasklist(const Tasklist& tasklist) { return *new InsertTasklistJob(this, tasklist); }
 UpdateTasklistJob& Service::updateTasklist(const Tasklist& tasklist) { return *new UpdateTasklistJob(this, tasklist); }
-DeleteTasklistJob& Service::deleteTasklist(const Tasklist& tasklist) { return *new DeleteTasklistJob(this, tasklist.id()); }
-DeleteTasklistJob& Service::deleteTasklist(const QString& tasklistId) { return *new DeleteTasklistJob(this, tasklistId); }
-//DeleteTasklistJob& Service::deleteTasklist(const QUrl& selfLink);
+DeleteTasklistJob& Service::deleteTasklist(const Tasklist& tasklist) { return *new DeleteTasklistJob(this, tasklist.selfLink()); }
+DeleteTasklistJob& Service::deleteTasklist(const QString& tasklistId) { return *new DeleteTasklistJob(this, Tasklist::generateSelfLink(tasklistId)); }
+DeleteTasklistJob& Service::deleteTasklist(const QUrl& selfLink) { return *new DeleteTasklistJob(this, selfLink); }
 ListTasksJob& Service::listTasks(const Tasklist& tasklist) { return *new ListTasksJob(this, tasklist.id()); }
 ListTasksJob& Service::listTasks(const QString& tasklistId) { return *new ListTasksJob(this, tasklistId); }
 GetTaskJob& Service::getTask(const QUrl& selfLink) { return *new GetTaskJob(this, selfLink); }

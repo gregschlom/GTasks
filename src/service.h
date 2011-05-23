@@ -47,13 +47,13 @@ public:
 	const OAuth::Token token() const;
 
 	ListTasklistsJob& listTasklists();
-//	GetTasklistJob& getTasklist(const QUrl& selfLink);
+	GetTasklistJob& getTasklist(const QUrl& selfLink);
 	GetTasklistJob& getTasklist(const QString& tasklistId);
 	InsertTasklistJob& insertTasklist(const Tasklist& tasklist);
 	UpdateTasklistJob& updateTasklist(const Tasklist& tasklist);
 	DeleteTasklistJob& deleteTasklist(const Tasklist& tasklist);
 	DeleteTasklistJob& deleteTasklist(const QString& tasklistId);
-//	DeleteTasklistJob& deleteTasklist(const QUrl& selfLink);
+	DeleteTasklistJob& deleteTasklist(const QUrl& selfLink);
 	ListTasksJob& listTasks(const Tasklist& tasklist);
 	ListTasksJob& listTasks(const QString& tasklistId);
 	GetTaskJob& getTask(const QUrl& selfLink);

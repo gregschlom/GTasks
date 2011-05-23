@@ -32,9 +32,9 @@ ListTasklistsJob& ListTasklistsJob::pageToken(const QString& pageToken)    { add
 /*!
   GetTasklistJob
 */
-GetTasklistJob::GetTasklistJob(Service* service, const QString& tasklistId)
+GetTasklistJob::GetTasklistJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Get, Tasklist::generateSelfLink(tasklistId),
+          Job::Get, selfLink,
           SIGNAL(result(GTasks::Tasklist)))
 {
 }
@@ -81,9 +81,9 @@ void InsertTasklistJob::parseReply(const QVariantMap& response)
 /*!
   DeleteTasklistJob
 */
-DeleteTasklistJob::DeleteTasklistJob(Service* service, const QString& tasklistId)
+DeleteTasklistJob::DeleteTasklistJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Delete, Tasklist::generateSelfLink(tasklistId),
+          Job::Delete, selfLink,
           SIGNAL(result()))
 {
 }
