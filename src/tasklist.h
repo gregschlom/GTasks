@@ -35,6 +35,7 @@ public:
 
 	QVariantMap serialize() const;
 	void deserialize(QVariantMap data);
+	static QUrl generateSelfLink(const QString& tasklistId);
 
 	QString kind() const;
 	QString id() const;

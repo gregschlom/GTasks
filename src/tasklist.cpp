@@ -85,6 +85,11 @@ void Tasklist::deserialize(QVariantMap data)
 	d->selfLink  = data.value("selfLink").value<QUrl>();
 }
 
+QUrl Tasklist::generateSelfLink(const QString& tasklistId)
+{
+	return QUrl(QString("https://www.googleapis.com/tasks/v1/users/@me/lists/%1").arg(tasklistId));
+}
+
 // Getters
 QString      Tasklist::kind()      const { return d->kind; }
 QString      Tasklist::id()        const { return d->id; }

@@ -148,6 +148,11 @@ QString TaskPrivate::statusAsString() const
 	}
 }
 
+QUrl Task::generateSelfLink(const QString& tasklistId, const QString& taskId)
+{
+	return QUrl(QString("https://www.googleapis.com/tasks/v1/lists/%1/tasks/%2").arg(tasklistId).arg(taskId));
+}
+
 // Getters
 QString      Task::kind()      const { return d->kind; }
 QString      Task::id()        const { return d->id; }

@@ -10,6 +10,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QUrl>
 
 class QNetworkReply;
 class QNetworkRequest;
@@ -24,7 +25,7 @@ class Job : public QObject {
 public:
 	enum HttpMethod { Get, Post, Put, Delete, Head };
 
-	explicit Job(Service* service, HttpMethod method, QString path, const char* result);
+	explicit Job(Service* service, HttpMethod method, const QUrl& url, const char* result);
 	void start();
 	void startAndCallback(QObject* object, const char* callbackSlot);
 
@@ -41,7 +42,7 @@ private slots:
 private:
 	Service* m_service;
 	HttpMethod m_method;
-	QString m_path;
+	QUrl m_url;
 	QMap<QString, QString> m_parameters;
 	QVariantMap m_data;
 	QNetworkReply* m_reply;

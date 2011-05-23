@@ -19,11 +19,11 @@
 
 namespace GTasks {
 
-Job::Job(Service* service, HttpMethod method, QString path, const char* result)
+Job::Job(Service* service, HttpMethod method, const QUrl& url, const char* result)
 	: QObject(service),
 	  m_service(service),
       m_method(method),
-      m_path(path),
+      m_url(url),
       m_reply(0),
       m_resultSignal(result),
       m_data()
@@ -70,14 +70,11 @@ void Job::start()
 	// Assert that this job isn't already started
 	Q_ASSERT(m_reply == 0);
 
-	QUrl url = m_service->baseUrl();
-	url.setPath(url.path() + m_path);
-
 	// Add request parameters
 	QMapIterator<QString, QString> i(m_parameters);
 	while (i.hasNext()) {
 		i.next();
-		url.addQueryItem(i.key(), i.value());
+		m_url.addQueryItem(i.key(), i.value());
 	}
 
 	OAuth::Token::HttpMethod method;
@@ -88,10 +85,10 @@ void Job::start()
 	case Delete: method = OAuth::Token::HttpDelete; break;
 	}
 
-	QByteArray authHeader = m_service->token().signRequest(url, OAuth::Token::HttpHeader, method);
+	QByteArray authHeader = m_service->token().signRequest(m_url, OAuth::Token::HttpHeader, method);
 
 	QNetworkRequest request;
-	request.setUrl(url);
+	request.setUrl(m_url);
 	request.setRawHeader("Authorization", authHeader);
 
 	QJson::Serializer json;
