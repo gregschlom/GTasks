@@ -103,9 +103,10 @@ QVariantMap Task::serialize() const
 
 void Task::deserialize(QVariantMap data)
 {
-	Q_ASSERT(data.value("kind") == "tasks#task");
+	if (data.value("kind") != "tasks#task") {
+		return;
+	}
 
-	d->kind      = data.value("kind").value<QString>();
 	d->id        = data.value("id").value<QString>();
 	d->etag      = data.value("etag").value<QString>();
 	d->title     = data.value("title").value<QString>();
@@ -150,7 +151,11 @@ QString TaskPrivate::statusAsString() const
 
 QUrl Task::generateSelfLink(const QString& tasklistId, const QString& taskId)
 {
-	return QUrl(QString("https://www.googleapis.com/tasks/v1/lists/%1/tasks/%2").arg(tasklistId).arg(taskId));
+	QUrl url("https://www.googleapis.com/tasks/v1/lists/" + tasklistId + "/tasks");
+	if (!taskId.isEmpty()) {
+		url.setPath(url.path() + "/" + taskId);
+	}
+	return url;
 }
 
 // Getters

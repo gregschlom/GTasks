@@ -13,6 +13,7 @@
 #include "tasklist.h"
 #include "tasklistcollection.h"
 #include "taskcollection.h"
+#include "error.h"
 
 namespace GTasks {
 
@@ -25,10 +26,10 @@ public:
 	ListTasklistsJob& pageToken(const QString& pageToken);
 
 signals:
-	void result(GTasks::TasklistCollection);
+	void result(GTasks::TasklistCollection, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 
 };
 
@@ -39,10 +40,10 @@ public:
 	explicit GetTasklistJob(Service* service, const QUrl& selfLink);
 
 signals:
-	void result(GTasks::Tasklist);
+	void result(GTasks::Tasklist, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class UpdateTasklistJob : public Job
@@ -52,10 +53,10 @@ public:
     explicit UpdateTasklistJob(Service* service, const Tasklist& tasklist);
 
 signals:
-	void result(GTasks::Tasklist);
+	void result(GTasks::Tasklist, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class InsertTasklistJob : public Job
@@ -65,10 +66,10 @@ public:
     explicit InsertTasklistJob(Service* service, const Tasklist& tasklist);
 
 signals:
-	void result(GTasks::Tasklist);
+	void result(GTasks::Tasklist, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class DeleteTasklistJob : public Job
@@ -78,10 +79,10 @@ public:
 	explicit DeleteTasklistJob(Service* service, const QUrl& selfLink);
 
 signals:
-	void result();
+	void result(GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class ListTasksJob : public Job
@@ -103,10 +104,10 @@ public:
 	ListTasksJob& showHidden(bool flag);                   // default true
 
 signals:
-	void result(GTasks::TaskCollection);
+	void result(GTasks::TaskCollection, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class GetTaskJob : public Job
@@ -116,10 +117,10 @@ public:
 	explicit GetTaskJob(Service* service, const QUrl& selfLink);
 
 signals:
-	void result(GTasks::Task);
+	void result(GTasks::Task, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class InsertTaskJob : public Job
@@ -132,10 +133,10 @@ public:
 	InsertTaskJob& after(const QString& taskId);
 
 signals:
-	void result(GTasks::Task);
+	void result(GTasks::Task, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class UpdateTaskJob : public Job
@@ -145,10 +146,10 @@ public:
     explicit UpdateTaskJob(Service* service, const Task& task);
 
 signals:
-	void result(GTasks::Task);
+	void result(GTasks::Task, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class DeleteTaskJob : public Job
@@ -158,10 +159,10 @@ public:
 	explicit DeleteTaskJob(Service* service, const QUrl& selfLink);
 
 signals:
-	void result();
+	void result(GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class MoveTaskJob : public Job
@@ -173,10 +174,10 @@ public:
 	MoveTaskJob& asChildOf(const QString& taskId);
 	MoveTaskJob& after(const QString& taskId);
 signals:
-	void result(GTasks::Task);
+	void result(GTasks::Task, GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 class ClearTasksJob : public Job
@@ -186,10 +187,10 @@ public:
 	explicit ClearTasksJob(Service* service, const QString& tasklistId);
 
 signals:
-	void result();
+	void result(GTasks::Error);
 
-protected slots:
-	void parseReply(const QVariantMap& response);
+protected:
+	void parseReply(const QVariantMap& response, const GTasks::Error& error);
 };
 
 }

@@ -7,6 +7,7 @@
 
 #include "job.h"
 #include "service.h"
+#include "error.h"
 
 #include <QDebug>
 #include <QDateTime>
@@ -107,7 +108,6 @@ void Job::start()
     connect(m_reply, SIGNAL(finished()), this, SLOT(parseReply()));
 	m_reply->ignoreSslErrors();
 
-
 	qDebug() << "Requesting... " << request.url() << "with data" << data << "auth:" << request.rawHeader("Authorization");
 }
 
@@ -118,16 +118,29 @@ void Job::setRequestData(const QVariantMap &data)
 
 void Job::parseReply()
 {
+	Error error;
+	QByteArray responseString = m_reply->readAll();
+
 	bool ok;
 	QJson::Parser parser;
-	QVariantMap response = parser.parse(m_reply->readAll(), &ok).toMap();
+	QVariantMap response = parser.parse(responseString, &ok).toMap();
 
-	if (m_reply->error() > 0) {
-		qDebug() << "Error" << m_reply->error() << m_reply->errorString();
-		qDebug() << m_reply->readAll();
+	// Set error codes and messages if any
+	error.setCode(m_reply->error());
+	error.setMessage(m_reply->errorString());
+	error.setHttpCode(m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+	if (response.contains("error")) {
+		error.setGtasksMessage(response.value("error").toMap().value("message").toString());
 	}
 
-	parseReply(response);
+	// Deal with parsing errors
+	if (!ok) {
+		error.setCode(QNetworkReply::ProtocolFailure);
+		error.setMessage("Google Tasks server returned an invalid JSON string");
+		error.setGtasksMessage(responseString);
+	}
+
+	parseReply(response, error);
 	m_reply->deleteLater();
 	this->deleteLater();
 }

@@ -76,9 +76,10 @@ QVariantMap Tasklist::serialize() const
 
 void Tasklist::deserialize(QVariantMap data)
 {
-	Q_ASSERT(data.value("kind") == "tasks#taskList");
+	if (data.value("kind") != "tasks#taskList") {
+		return;
+	}
 
-	d->kind      = data.value("kind").value<QString>();
 	d->id        = data.value("id").value<QString>();
 	d->etag      = data.value("etag").value<QString>();
 	d->title     = data.value("title").value<QString>();
@@ -87,7 +88,11 @@ void Tasklist::deserialize(QVariantMap data)
 
 QUrl Tasklist::generateSelfLink(const QString& tasklistId)
 {
-	return QUrl(QString("https://www.googleapis.com/tasks/v1/users/@me/lists/%1").arg(tasklistId));
+	QUrl url("https://www.googleapis.com/tasks/v1/users/@me/lists");
+	if (!tasklistId.isEmpty()) {
+		url.setPath(url.path() + "/" + tasklistId);
+	}
+	return url;
 }
 
 // Getters

@@ -3,7 +3,7 @@ CONFIG   += static create_prl
 QT       -= gui
 QT       += network
 TARGET   = gtasks
-DESTDIR  = $$OUT_PWD/../lib
+DESTDIR  = $$PWD/../lib
 
 VERSION = 0.1
 
@@ -28,7 +28,9 @@ HEADERS += \
     tasklistcollection_p.h \
     tasklistcollection.h \
     tasklist_p.h \
-    tasklist.h
+    tasklist.h \
+    error.h \
+    error_p.h
 
 SOURCES += \
     jobs.cpp \
@@ -37,4 +39,5 @@ SOURCES += \
     task.cpp \
     taskcollection.cpp \
     tasklistcollection.cpp \
-    tasklist.cpp
+    tasklist.cpp \
+    error.cpp

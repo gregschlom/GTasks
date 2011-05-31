@@ -7,7 +7,8 @@
 
 #include "jobs.h"
 
-//#include <QDebug>
+#include <QStringList>
+#include <QDateTime>
 
 namespace GTasks {
 
@@ -16,14 +17,14 @@ namespace GTasks {
 */
 ListTasklistsJob::ListTasklistsJob(Service* service)
 	: Job(service,
-          Job::Get, Tasklist::generateSelfLink(""),
-          SIGNAL(result(GTasks::TasklistCollection)))
+		  Job::Get, Tasklist::generateSelfLink(""),
+		  SIGNAL(result(GTasks::TasklistCollection, GTasks::Error)))
 {
 }
 
-void ListTasklistsJob::parseReply(const QVariantMap& response)
+void ListTasklistsJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(TasklistCollection(response));
+	emit result(TasklistCollection(response), error);
 }
 
 ListTasklistsJob& ListTasklistsJob::maxResults(int max)                    { addRequestParam("maxResults", max); return *this; }
@@ -34,14 +35,14 @@ ListTasklistsJob& ListTasklistsJob::pageToken(const QString& pageToken)    { add
 */
 GetTasklistJob::GetTasklistJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Get, selfLink,
-          SIGNAL(result(GTasks::Tasklist)))
+		  Job::Get, selfLink,
+		  SIGNAL(result(GTasks::Tasklist, GTasks::Error)))
 {
 }
 
-void GetTasklistJob::parseReply(const QVariantMap& response)
+void GetTasklistJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Tasklist(response));
+	emit result(Tasklist(response), error);
 }
 
 /*!
@@ -49,15 +50,15 @@ void GetTasklistJob::parseReply(const QVariantMap& response)
 */
 UpdateTasklistJob::UpdateTasklistJob(Service* service, const Tasklist& tasklist)
 	: Job(service,
-          Job::Put, tasklist.selfLink(),
-          SIGNAL(result(GTasks::Tasklist)))
+		  Job::Put, tasklist.selfLink(),
+		  SIGNAL(result(GTasks::Tasklist, GTasks::Error)))
 {
 	setRequestData(tasklist.serialize());
 }
 
-void UpdateTasklistJob::parseReply(const QVariantMap& response)
+void UpdateTasklistJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Tasklist(response));
+	emit result(Tasklist(response), error);
 }
 
 /*!
@@ -65,17 +66,17 @@ void UpdateTasklistJob::parseReply(const QVariantMap& response)
 */
 InsertTasklistJob::InsertTasklistJob(Service* service, const Tasklist& tasklist)
 	: Job(service,
-          Job::Post, Tasklist::generateSelfLink(""),
-          SIGNAL(result(GTasks::Tasklist)))
+		  Job::Post, Tasklist::generateSelfLink(""),
+		  SIGNAL(result(GTasks::Tasklist, GTasks::Error)))
 {
 	QVariantMap data;
 	data.insert("title", tasklist.title());
 	setRequestData(data);
 }
 
-void InsertTasklistJob::parseReply(const QVariantMap& response)
+void InsertTasklistJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Tasklist(response));
+	emit result(Tasklist(response), error);
 }
 
 /*!
@@ -83,15 +84,15 @@ void InsertTasklistJob::parseReply(const QVariantMap& response)
 */
 DeleteTasklistJob::DeleteTasklistJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Delete, selfLink,
-          SIGNAL(result()))
+		  Job::Delete, selfLink,
+		  SIGNAL(result(GTasks::Error)))
 {
 }
 
-void DeleteTasklistJob::parseReply(const QVariantMap& response)
+void DeleteTasklistJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
 	Q_UNUSED(response);
-	emit result();
+	emit result(error);
 }
 
 /*!
@@ -99,14 +100,14 @@ void DeleteTasklistJob::parseReply(const QVariantMap& response)
 */
 ListTasksJob::ListTasksJob(Service* service, const QString& tasklistId)
 	: Job(service,
-          Job::Get, Task::generateSelfLink(tasklistId, ""),
-          SIGNAL(result(GTasks::TaskCollection)))
+		  Job::Get, Task::generateSelfLink(tasklistId, ""),
+		  SIGNAL(result(GTasks::TaskCollection, GTasks::Error)))
 {
 }
 
-void ListTasksJob::parseReply(const QVariantMap& response)
+void ListTasksJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(TaskCollection(response));
+	emit result(TaskCollection(response), error);
 }
 
 // Optional parameters setters
@@ -126,14 +127,14 @@ ListTasksJob& ListTasksJob::showHidden(bool flag)                  { addRequestP
 */
 GetTaskJob::GetTaskJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Get, selfLink,
-          SIGNAL(result(GTasks::Task)))
+		  Job::Get, selfLink,
+		  SIGNAL(result(GTasks::Task, GTasks::Error)))
 {
 }
 
-void GetTaskJob::parseReply(const QVariantMap& response)
+void GetTaskJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Task(response));
+	emit result(Task(response), error);
 }
 
 /*!
@@ -141,15 +142,23 @@ void GetTaskJob::parseReply(const QVariantMap& response)
 */
 InsertTaskJob::InsertTaskJob(Service* service, const QString& tasklistId, const Task& task)
 	: Job(service,
-          Job::Post, Task::generateSelfLink(tasklistId, ""),
-          SIGNAL(result(GTasks::Task)))
+		  Job::Post, Task::generateSelfLink(tasklistId, ""),
+		  SIGNAL(result(GTasks::Task, GTasks::Error)))
 {
-	setRequestData(task.serialize());
+	QVariantMap data;
+
+	data.insert("title", task.title());
+	data.insert("notes", task.notes());
+	if (!task.due().isNull()) {
+		data.insert("due", task.due());
+	}
+
+	setRequestData(data);
 }
 
-void InsertTaskJob::parseReply(const QVariantMap& response)
+void InsertTaskJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Task(response));
+	emit result(Task(response), error);
 }
 
 InsertTaskJob& InsertTaskJob::asChildOf(const QString& taskId) { addRequestParam("parent",   taskId); return *this; }
@@ -160,15 +169,15 @@ InsertTaskJob& InsertTaskJob::after(const QString& taskId)     { addRequestParam
 */
 UpdateTaskJob::UpdateTaskJob(Service* service, const Task& task)
 	: Job(service,
-          Job::Put, task.selfLink(),
-          SIGNAL(result(GTasks::Task)))
+		  Job::Put, task.selfLink(),
+		  SIGNAL(result(GTasks::Task, GTasks::Error)))
 {
 	setRequestData(task.serialize());
 }
 
-void UpdateTaskJob::parseReply(const QVariantMap& response)
+void UpdateTaskJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Task(response));
+	emit result(Task(response), error);
 }
 
 /*!
@@ -176,15 +185,15 @@ void UpdateTaskJob::parseReply(const QVariantMap& response)
 */
 DeleteTaskJob::DeleteTaskJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Delete, selfLink,
-          SIGNAL(result()))
+		  Job::Delete, selfLink,
+		  SIGNAL(result(GTasks::Error)))
 {
 }
 
-void DeleteTaskJob::parseReply(const QVariantMap& response)
+void DeleteTaskJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
 	Q_UNUSED(response);
-	emit result();
+	emit result(error);
 }
 
 /*!
@@ -192,14 +201,14 @@ void DeleteTaskJob::parseReply(const QVariantMap& response)
 */
 MoveTaskJob::MoveTaskJob(Service* service, const QUrl& selfLink)
 	: Job(service,
-          Job::Post, QUrl(selfLink.toString() + "/move"),
-          SIGNAL(result(GTasks::Task)))
+		  Job::Post, QUrl(selfLink.toString() + "/move"),
+		  SIGNAL(result(GTasks::Task, GTasks::Error)))
 {
 }
 
-void MoveTaskJob::parseReply(const QVariantMap& response)
+void MoveTaskJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
-	emit result(Task(response));
+	emit result(Task(response), error);
 }
 
 MoveTaskJob& MoveTaskJob::asChildOf(const QString& taskId) { addRequestParam("parent",   taskId); return *this; }
@@ -210,15 +219,15 @@ MoveTaskJob& MoveTaskJob::after(const QString& taskId)     { addRequestParam("pr
 */
 ClearTasksJob::ClearTasksJob(Service* service, const QString& tasklistId)
 	: Job(service,
-          Job::Post, QUrl("https://www.googleapis.com/tasks/v1/lists/" + tasklistId + "/clear"),
-          SIGNAL(result()))
+		  Job::Post, QUrl("https://www.googleapis.com/tasks/v1/lists/" + tasklistId + "/clear"),
+		  SIGNAL(result(GTasks::Error)))
 {
 }
 
-void ClearTasksJob::parseReply(const QVariantMap& response)
+void ClearTasksJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
 {
 	Q_UNUSED(response);
-	emit result();
+	emit result(error);
 }
 
 } // namespace GTasks

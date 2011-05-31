@@ -77,9 +77,10 @@ QVariantMap TaskCollection::serialize() const
 
 void TaskCollection::deserialize(QVariantMap data)
 {
-	Q_ASSERT(data.value("kind") == "tasks#tasks");
+	if (data.value("kind") != "tasks#tasks") {
+		return;
+	}
 
-	d->kind      = data.value("kind").value<QString>();
 	d->etag      = data.value("etag").value<QString>();
 	d->nextPageToken     = data.value("nextPageToken").value<QString>();
 

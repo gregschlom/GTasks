@@ -18,6 +18,7 @@ class QNetworkRequest;
 namespace GTasks {
 
 class Service;
+class Error;
 
 class Job : public QObject {
 	Q_OBJECT
@@ -32,9 +33,7 @@ public:
 protected:
 	void addRequestParam(const QString& param, const QVariant& value);
 	void setRequestData(const QVariantMap& data);
-
-protected slots:
-	virtual void parseReply(const QVariantMap& response) = 0;
+	virtual void parseReply(const QVariantMap& response, const GTasks::Error& error) = 0;
 
 private slots:
 	void parseReply();
