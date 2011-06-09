@@ -96,3 +96,10 @@ Usage
 			qDebug() << "Tasklist:" << tasklist.title() << "id:" << tasklist.id();
 		}
 	}
+
+Contact
+=======
+	GTasks is released under the terms of the MIT license.
+
+	For any information, feel free to contact me:
+	Gregory Schlomoff - gregory.schlomoff@gmail.com
