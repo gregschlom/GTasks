@@ -48,13 +48,13 @@ Memory management
 
 GTasks use the copy-on-write idiom for the model classes, and Qt's deleteLater() for the jobs, meaning that you don't have to manually delete any object, except the GTasks::Service instance.
 
-Auhtentication
+Authentication
 ==============
 
-	You must use the SimpleOAuth library to authenticate your user.
-	Once you have a valid OAuth::Token, just pass it to the GTasks::Service.
-	
-	See SimpleOauth documentation: https://github.com/gregschlom/SimpleOAuth
+You must use the SimpleOAuth library to authenticate your user.
+Once you have a valid OAuth::Token, just pass it to the GTasks::Service.
+
+See SimpleOauth documentation: https://github.com/gregschlom/SimpleOAuth
 
 Usage
 =====
@@ -104,7 +104,7 @@ Usage
 
 Contact
 =======
-	GTasks is released under the terms of the MIT license.
+GTasks is released under the terms of the MIT license.
 
-	For any information, feel free to contact me:
-	Gregory Schlomoff - gregory.schlomoff@gmail.com
+For any information, feel free to contact me:
+Gregory Schlomoff - gregory.schlomoff@gmail.com
