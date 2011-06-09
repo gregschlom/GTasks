@@ -43,6 +43,11 @@ This will return a const ref to the DeleteTask job, allowing you to chain with a
 
 startAndCallback will connect the slot that you provide with the job's result signal, and will start the job. If you're not interested in receiving the job's result signal, you could just call start() instead.
 
+Memory management
+=================
+
+GTasks use the copy-on-write idiom for the model classes, and Qt's deleteLater() for the jobs, meaning that you don't have to manually delete any object, except the GTasks::Service instance.
+
 Auhtentication
 ==============
 
