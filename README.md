@@ -15,27 +15,21 @@ Dependencies
 
 GTasks depends on the following libraries:
 
-  * SimpleOAuth - A OAuth library for Qt
+  * SimpleOAuth - A OAuth library for Qt:
     https://github.com/gregschlom/SimpleOAuth
 
-  * QJson - A library for reading and writing JSON
+  * QJson - A library for reading and writing JSON:
     http://qjson.sourceforge.net/
 
-  * And of course, GTasks depends on Qt
+  * And of course, Qt:
     http://qt.nokia.com/
 
 Architecture
 ============
 
-GTasks is structured into jobs. There is a job for each operation that you can do (list tasks, list tasklists, delete task, etc...), and each job has a result signal that si emitted when it is finished.
+GTasks is structured into jobs. There is a job for each operation that you can do (list tasks, list tasklists, delete task, etc...), and each job has a result signal that is emitted when the job finishes.
 
 You create a new job instances by using the appropriate method in the GTasks::Service, for example, to delete a task:
-
-	QString taskId = "ABCDEFGH1234";
-	// Assume service is a pointer to a Gtasks::Service instance
-	service->deleteTask(taskId);
-
-This will return a const ref to the DeleteTask job, allowing you to chain with a call to the startAndCallback() method:
 
 	QString taskId = "ABCDEFGH1234";
 	// Assume service is a pointer to a Gtasks::Service instance
@@ -61,7 +55,6 @@ Usage
 
 	MyClass::setupGTasks()
 	{		
-		//m_gtasks is a member variable of type GTasks::Service*
 		m_gtasks = new GTasks::Service(new QNetworkAccessManager(this), this);
 		m_gtasks->setApiKey("[YOUR API KEY HERE]");
 
@@ -73,14 +66,15 @@ Usage
 		token.setTokenString("[VALID OAUTH TOKEN STRING]");  // Assuming you have previously
 		token.setTokenSecret("[VALID OAUTH TOKEN SECRET]");	 // authenticated the user
 
-		m_gtasks->setToken(token);
-		
 		// m_gtasks is ready to process request now
+		m_gtasks->setToken(token);
 	}
 
+	/*!
+	  Retrieves a list of all Tasklists
+	 */
 	MyClass::getAllTaskslists
 	{
-		// Retrieve the list of Tasklists
 		m_gtasks->listTasklists().startAndCallback(this, 
 			SLOT(onTasklistsReceived(GTasks::TasklistCollection, GTasks::Error)));
 	}
@@ -88,7 +82,7 @@ Usage
 	/*!
 	  This slot will be called by GTasks when the tasklists have been retrieved
 	*/
-	MyClass::onTasklistsReceived(GTasks::TasklistCollection tasklists, GTasks::Error errror))
+	MyClass::onTasklistsReceived(GTasks::TasklistCollection tasklists, GTasks::Error error))
 	{
 		if (error.code() != QNetworkReply::NoError) {
 			// Do some error handling here
