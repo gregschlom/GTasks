@@ -190,7 +190,25 @@ UpdateTaskJob::UpdateTaskJob(Service* service, const Task& task)
 		  Job::Put, task.selfLink(),
 		  SIGNAL(result(GTasks::Task, GTasks::Error)))
 {
-	setRequestData(task.serialize());
+
+	QVariantMap fullData = task.serialize();
+	QVariantMap savedData;
+
+	QStringList savedFields;
+	savedFields << "id" << "title" <<  "notes" <<  "status" <<  "due";
+
+	// Don't update the due date if it's empty. TODO: How do we clear the due date?
+	if (fullData.value("due").toString().isEmpty()) {
+		savedFields.removeOne("due");
+	}
+
+	foreach (const QString& field, savedFields) {
+		if (fullData.contains(field)) {
+			savedData.insert(field, fullData.value(field));
+		}
+	}
+
+	setRequestData(savedData);
 }
 
 void UpdateTaskJob::parseReply(const QVariantMap& response, const GTasks::Error& error)
