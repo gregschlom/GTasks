@@ -74,7 +74,7 @@ TaskPrivate::TaskPrivate()
 	  notes(""),
 	  status(Task::NeedsAction),
 	  due(QDateTime()),
-	  completed(false),
+	  completed(QDateTime()),
 	  deleted(false),
 	  hidden(false)
 {
@@ -135,7 +135,7 @@ void Task::deserialize(QVariantMap data)
 	d->notes     = data.value("notes").value<QString>();
 	d->statusFromString(data.value("status").value<QString>());
 	d->due       = data.value("due").value<QDateTime>();
-	d->completed = data.value("completed").value<bool>();
+	d->completed = data.value("completed").value<QDateTime>();
 	d->deleted   = data.value("deleted").value<bool>();
 	d->hidden    = data.value("hidden").value<bool>();
 }
@@ -188,7 +188,7 @@ QString      Task::position()  const { return d->position; }
 QString      Task::notes()     const { return d->notes; }
 Task::Status Task::status()    const { return d->status; }
 QDateTime    Task::due()       const { return d->due; }
-bool         Task::completed() const { return d->completed; }
+QDateTime    Task::completed() const { return d->completed; }
 bool         Task::deleted()   const { return d->deleted; }
 bool         Task::hidden()    const { return d->hidden; }
 
@@ -197,6 +197,5 @@ void Task::setTitle(const QString& title) { d->title = title; }
 void Task::setNotes(const QString& notes) { d->notes = notes; }
 void Task::setStatus(Status status)       { d->status = status; }
 void Task::setDue(const QDateTime& due)   { d->due = due; }
-void Task::setCompleted(bool completed)   { d->completed = completed; }
 
 } // namespace GTasks

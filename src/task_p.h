@@ -52,7 +52,7 @@ public:
 	QString notes;
 	Task::Status status;
 	QDateTime due;
-	bool completed;
+	QDateTime completed;
 	bool deleted;
 	bool hidden;
 

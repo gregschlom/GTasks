@@ -66,7 +66,7 @@ public:
 	QString notes() const;
 	Status status() const;
 	QDateTime due() const;
-	bool completed() const;
+	QDateTime completed() const;
 	bool deleted() const;
 	bool hidden() const;
 
@@ -74,7 +74,6 @@ public:
 	void setNotes(const QString& notes);
 	void setStatus(Status status);
 	void setDue(const QDateTime& due);
-	void setCompleted(bool completed);
 
 private:
     friend class TaskPrivate;
