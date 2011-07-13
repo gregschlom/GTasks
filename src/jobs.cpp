@@ -179,8 +179,20 @@ void InsertTaskJob::parseReply(const QVariantMap& response, const GTasks::Error&
 	emit result(Task(response), error);
 }
 
-InsertTaskJob& InsertTaskJob::asChildOf(const QString& taskId) { addRequestParam("parent",   taskId); return *this; }
-InsertTaskJob& InsertTaskJob::after(const QString& taskId)     { addRequestParam("previous", taskId); return *this; }
+InsertTaskJob& InsertTaskJob::asChildOf(const QString& taskId)
+{
+	if (!taskId.isEmpty()) {
+		addRequestParam("parent", taskId);
+	}
+	return *this;
+}
+InsertTaskJob& InsertTaskJob::after(const QString& taskId)
+{
+	if (!taskId.isEmpty()) {
+		addRequestParam("previous", taskId);
+	}
+	return *this;
+}
 
 /*!
   UpdateTaskJob
