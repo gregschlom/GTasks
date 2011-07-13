@@ -70,6 +70,7 @@ public:
 	bool deleted() const;
 	bool hidden() const;
 
+	void setId(const QString& id);
 	void setTitle(const QString& title);
 	void setNotes(const QString& notes);
 	void setStatus(Status status);

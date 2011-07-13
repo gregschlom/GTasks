@@ -123,4 +123,11 @@ QUrl         Tasklist::selfLink()  const { return d->selfLink; }
 // Setters
 void Tasklist::setTitle(const QString& title) { d->title = title; }
 
+// Special setters
+// setId is used only to assign a temporary id, when creating a new tasklist
+void Tasklist::setId(const QString& id)
+{
+	Q_ASSERT(d->id.isEmpty());
+	d->id = id;
+}
 } // namespace GTasks

@@ -198,4 +198,12 @@ void Task::setNotes(const QString& notes) { d->notes = notes; }
 void Task::setStatus(Status status)       { d->status = status; }
 void Task::setDue(const QDateTime& due)   { d->due = due; }
 
+// Special setters
+// setId is used only to assign a temporary id, when creating a new task
+void Task::setId(const QString& id)
+{
+	Q_ASSERT(d->id.isEmpty());
+	d->id = id;
+}
+
 } // namespace GTasks

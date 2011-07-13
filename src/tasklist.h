@@ -61,6 +61,7 @@ public:
 	QString title() const;
 	QUrl selfLink() const;
 
+	void setId(const QString& id);
 	void setTitle(const QString& title);
 
 private:
