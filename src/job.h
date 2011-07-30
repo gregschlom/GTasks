@@ -61,9 +61,9 @@ private:
 	HttpMethod m_method;
 	QUrl m_url;
 	QMap<QString, QString> m_parameters;
-	QVariantMap m_data;
 	QNetworkReply* m_reply;
 	const char* m_resultSignal;
+	QVariantMap m_data;
 };
 
 }

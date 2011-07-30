@@ -102,6 +102,7 @@ void Job::start()
 	case Post:   method = OAuth::Token::HttpPost;   break;
 	case Put:    method = OAuth::Token::HttpPut;    break;
 	case Delete: method = OAuth::Token::HttpDelete; break;
+	case Head: break;
 	}
 
 	QByteArray authHeader = m_service->token().signRequest(m_url, OAuth::Token::HttpHeader, method);
@@ -121,6 +122,7 @@ void Job::start()
 	case Post:   m_reply = m_service->networkManager()->post(request, data);     break;
 	case Put:    m_reply = m_service->networkManager()->put(request, data);      break;
 	case Delete: m_reply = m_service->networkManager()->deleteResource(request); break;
+	case Head: break;
 	}
 
     connect(m_reply, SIGNAL(finished()), this, SLOT(parseReply()));
