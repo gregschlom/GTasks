@@ -66,6 +66,7 @@ void Job::addRequestParam(const QString& name, const QVariant& value)
 	switch (value.type()) {
 	case QVariant::Date:
 	case QVariant::DateTime:
+		//TODO: bug on timezone offset here
 		m_parameters.insert(name, value.toDateTime().toString("yyyy-MM-ddThh:mm:ss.zzzZ"));
 		break;
 	default:
